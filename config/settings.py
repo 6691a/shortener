@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'debug_toolbar',
 
     'shortener',
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
 
 INTERNAL_IPS = [
     "127.0.0.1",
-    "localhost"
+    "localhost",
 ]
 
 
