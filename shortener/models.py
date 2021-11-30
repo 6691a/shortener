@@ -1,8 +1,51 @@
-from django.db import models
+import string
+import random
 
-# Create your models here.
-class Plan(models.Model):
-    name = models.CharField(max_length=20)
-    print = models.IntegerField()
+from django.db import models
+from django.conf import settings
+
+from plan.models import Plan
+
+USER = settings.AUTH_USER_MODEL
+
+class Organization(models.Model):
+    class Industries (models.TextChoices):
+        PERSONAL = 'personal'
+        RETAIL = 'retail'
+        MANUFACTURING = 'manufacturing'
+        IT = 'it'
+        OTHERS = 'others'
+    
+    name = models.CharField(max_length=50)
+    industry = models.CharField(max_length=15, choices=Industries.choices, default=Industries.OTHERS)
+    plan = models.ForeignKey(Plan, on_delete=models.DO_NOTHING, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Categories(models.Model):
+    name = models.CharField(max_length=100)
+    organization = models.ForeignKey(Organization, on_delete=models.DO_NOTHING)
+    creator = models.ForeignKey(USER, on_delete=models.CASCADE)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class ShortenedUrls(models.Model):
+    class UrlCreatedVia(models.TextChoices):
+        WEBSITE = "web"
+        TELEGRAM = "telegram"
+
+    def rand_string():
+        str_pool = string.digits + string.ascii_letters
+        return ("".join([random.choice(str_pool) for _ in range(6)])).lower()
+
+    nick_name = models.CharField(max_length=100)
+    category = models.ForeignKey(Categories, on_delete=models.DO_NOTHING, null=True)
+    prefix = models.CharField(max_length=50)
+    creator = models.ForeignKey(USER, on_delete=models.CASCADE)
+    target_url = models.CharField(max_length=2000)
+    shortened_url = models.CharField(max_length=6, default=rand_string)
+    create_via = models.CharField(max_length=8, choices=UrlCreatedVia.choices, default=UrlCreatedVia.WEBSITE)
+    expired_at = models.DateTimeField(null=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
