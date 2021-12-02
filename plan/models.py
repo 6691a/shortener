@@ -1,8 +1,8 @@
 from django.db import models
 
+from base.models import BaseModels
 # Create your models here.
-class Plan(models.Model):
+class Plan(BaseModels):
     name = models.CharField(max_length=20)
     print = models.IntegerField()
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+

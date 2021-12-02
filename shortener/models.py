@@ -2,13 +2,15 @@ import string
 import random
 
 from django.db import models
+from base.models import BaseModels
+
 from django.conf import settings
 
 from plan.models import Plan
 
 USER = settings.AUTH_USER_MODEL
 
-class Organization(models.Model):
+class Organization(BaseModels):
     class Industries (models.TextChoices):
         PERSONAL = 'personal'
         RETAIL = 'retail'
@@ -19,18 +21,14 @@ class Organization(models.Model):
     name = models.CharField(max_length=50)
     industry = models.CharField(max_length=15, choices=Industries.choices, default=Industries.OTHERS)
     plan = models.ForeignKey(Plan, on_delete=models.DO_NOTHING, null=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
 
-class Categories(models.Model):
+class Categories(BaseModels):
     name = models.CharField(max_length=100)
     organization = models.ForeignKey(Organization, on_delete=models.DO_NOTHING)
     creator = models.ForeignKey(USER, on_delete=models.CASCADE)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
-class ShortenedUrls(models.Model):
+class ShortenedUrls(BaseModels):
     class UrlCreatedVia(models.TextChoices):
         WEBSITE = "web"
         TELEGRAM = "telegram"
@@ -47,5 +45,3 @@ class ShortenedUrls(models.Model):
     shortened_url = models.CharField(max_length=6, default=rand_string)
     create_via = models.CharField(max_length=8, choices=UrlCreatedVia.choices, default=UrlCreatedVia.WEBSITE)
     expired_at = models.DateTimeField(null=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_add=True)
