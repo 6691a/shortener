@@ -10,6 +10,7 @@ USER = settings.AUTH_USER_MODEL
 
 class User(AbstractUser):
     plan = models.ForeignKey(Plan, on_delete=DO_NOTHING, verbose_name="요금", null=True)
+    url_count = models.IntegerField(default=0)
     organization = models.ForeignKey(Organization, on_delete=DO_NOTHING, null=True)
 
 

@@ -85,7 +85,7 @@ TEMPLATES = [
     },
 ]
 WSGI_APPLICATION = 'config.wsgi.application'
-print(env('DB_PASSWORD'))
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 pymysql.install_as_MySQLdb()
@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
+        'PASSWORD': f"$${env('DB_PASSWORD')}",
         'HOST': env('DB_HOST'),
         'PORT': env('DB_PORT'),
         'OPTIONS': {
@@ -103,7 +103,6 @@ DATABASES = {
         }
     }
 }
-print(DATABASES)
 
 
 
