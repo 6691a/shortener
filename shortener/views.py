@@ -39,7 +39,9 @@ class ShortenerUpdateDeleteView(APIView):
         
         try:
             urls.delete()
-        except Exception:
-            print(Exception)
+        except Exception as e:
+            print(e)
         else:
-            url_count_changer
+            url_count_changer(request, False)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+

@@ -49,6 +49,6 @@ class ShortenedUrls(BaseModels):
     shortened_url = models.CharField(max_length=6, default=rand_string)
     create_via = models.CharField(max_length=8, choices=UrlCreatedVia.choices, default=UrlCreatedVia.WEBSITE)
     expired_at = models.DateTimeField(null=True)
-
+    
     class Meta:
         ordering = ["-created_at"]

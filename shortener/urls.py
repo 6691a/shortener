@@ -1,5 +1,8 @@
 from django.urls import path
 
+from .views import ShortenerlistCreateView, ShortenerUpdateDeleteView
 urlpatterns = [
-    # path('', index),
+    path('', ShortenerlistCreateView.as_view()),
+    path('<int:id>', ShortenerUpdateDeleteView.as_view()),
+
 ]
