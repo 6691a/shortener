@@ -43,7 +43,7 @@ class ShortenedUrls(BaseModels):
 
     nick_name = models.CharField(max_length=100)
     category = models.ForeignKey(Categories, on_delete=models.DO_NOTHING, null=True)
-    prefix = models.CharField(max_length=50)
+    prefix = models.CharField(max_length=50, default=rand_letter)
     creator = models.ForeignKey(USER, on_delete=models.CASCADE)
     target_url = models.CharField(max_length=2000)
     shortened_url = models.CharField(max_length=6, default=rand_string)
@@ -52,3 +52,11 @@ class ShortenedUrls(BaseModels):
     
     class Meta:
         ordering = ["-created_at"]
+        indexes = [
+            models.Index(
+                fields=[
+                    "prefix",
+                    "shortened_url"
+                ]
+            )
+        ]

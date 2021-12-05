@@ -13,7 +13,6 @@ class ShortenerSerializers(serializers.ModelSerializer):
         return instance
     
     def update(self, instance, validated_data):
-        instance
         return super().update(instance, validated_data)
 
 

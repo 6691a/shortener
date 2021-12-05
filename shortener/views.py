@@ -1,13 +1,25 @@
-from rest_framework import serializers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
+
 
 from .models import ShortenedUrls
 from .serializers import ShortenerSerializers
 from .utils import url_count_changer
 
+
+class UrlRedirectView(APIView):
+    def get(self, request, prefix, url):
+        url = get_object_or_404(ShortenedUrls, prefix=prefix, shortened_url=url)
+        is_permanent = False
+        target = url.target_url
+        if url.creator.organization:
+            is_permanent = True
+
+        if not target.startswith("https://") and not target.startswith("http://"):
+            target = f"https://{url.target_url}"
+        return redirect(target, permanent=is_permanent)
 
 
 class ShortenerlistCreateView(APIView):
@@ -22,8 +34,8 @@ class ShortenerlistCreateView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ShortenerUpdateDeleteView(APIView):
     def put(self, request, id):
@@ -47,3 +59,7 @@ class ShortenerUpdateDeleteView(APIView):
             url_count_changer(request, False)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+
+# def url_redirect(request, prefix, url):
+    # print(prefix, url)
