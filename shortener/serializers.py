@@ -11,16 +11,18 @@ class ShortenerSerializers(serializers.ModelSerializer):
         )
         url_count_changer(request, True)
         return instance
- 
-
-    # def update(self, instance, validated_data):
-        
     
-    def save(self, **kwargs):
-        print("123111")
-        return super().save(**kwargs)
+    def update(self, instance, validated_data):
+        instance
+        return super().update(instance, validated_data)
+
 
     class Meta:
         model = ShortenedUrls
         fields = '__all__'
-        fields = ["nick_name", "target_url"]
+        fields = ["id", "category", "prefix", "nick_name", "target_url", "shortened_url"]
+        extra_kwargs = {
+            "category": {"write_only": True},
+            "prefix": {"read_only": True},
+            "shortened_url": {"read_only": True},
+        }
