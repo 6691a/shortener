@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404, redirect
 
+from statistic.models import Statistic
+
 
 from .models import ShortenedUrls
 from .serializers import ShortenerSerializers
@@ -19,6 +21,9 @@ class UrlRedirectView(APIView):
 
         if not target.startswith("https://") and not target.startswith("http://"):
             target = f"https://{url.target_url}"
+        
+        statistic = Statistic()
+        statistic.record(request, url)
         return redirect(target, permanent=is_permanent)
 
 

@@ -44,10 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'debug_toolbar',
+    'django_user_agents',
 
     'shortener',
-    'plan',
     'user',
+    'plan',
     'statistic',
 ]
 
@@ -56,6 +57,7 @@ INTERNAL_IPS = [
     "localhost",
 ]
 
+GEOIP_PATH = BASE_DIR / 'geolite2'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -77,7 +80,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_proceßssors.debug',
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
