@@ -4,6 +4,7 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404, redirect
 
 from statistic.models import Statistic
+from ratelimit.decorators import ratelimit
 
 
 from .models import ShortenedUrls
@@ -12,6 +13,7 @@ from .utils import url_count_changer
 
 
 class UrlRedirectView(APIView):
+    # @ratelimit(key='ip', rate='10/s')
     def get(self, request, prefix, url):
         url = get_object_or_404(ShortenedUrls, prefix=prefix, shortened_url=url)
         is_permanent = False
@@ -21,13 +23,14 @@ class UrlRedirectView(APIView):
 
         if not target.startswith("https://") and not target.startswith("http://"):
             target = f"https://{url.target_url}"
-        
+        custom_params = request.GET.dict() if request.GET.dict() else None
+        print("1")
         statistic = Statistic()
-        statistic.record(request, url)
+        statistic.record(request, url, custom_params)
         return redirect(target, permanent=is_permanent)
 
 
-class ShortenerlistCreateView(APIView):
+class ShortenerListCreateView(APIView):
     def get(self, request):
         urls = ShortenedUrls.objects.filter()
 

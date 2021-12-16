@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'user',
     'plan',
     'statistic',
+    'tracking',
 ]
 
 INTERNAL_IPS = [
