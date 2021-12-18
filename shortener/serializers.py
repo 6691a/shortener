@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from .utils import url_count_changer
 from .models import ShortenedUrls
+
 class ShortenerSerializers(serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context['request']
@@ -19,7 +20,7 @@ class ShortenerSerializers(serializers.ModelSerializer):
     class Meta:
         model = ShortenedUrls
         fields = '__all__'
-        fields = ["id", "category", "prefix", "nick_name", "target_url", "shortened_url"]
+        fields = ["id", "category", "prefix", "creator", "nick_name", "target_url", "shortened_url", "click"]
         extra_kwargs = {
             "category": {"write_only": True},
             "prefix": {"read_only": True},

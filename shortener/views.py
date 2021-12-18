@@ -11,7 +11,6 @@ from .models import ShortenedUrls
 from .serializers import ShortenerSerializers
 from .utils import url_count_changer
 
-
 class UrlRedirectView(APIView):
     # @ratelimit(key='ip', rate='10/s')
     def get(self, request, prefix, url):
@@ -24,7 +23,6 @@ class UrlRedirectView(APIView):
         if not target.startswith("https://") and not target.startswith("http://"):
             target = f"https://{url.target_url}"
         custom_params = request.GET.dict() if request.GET.dict() else None
-        print("1")
         statistic = Statistic()
         statistic.record(request, url, custom_params)
         return redirect(target, permanent=is_permanent)
@@ -66,8 +64,3 @@ class ShortenerUpdateDeleteView(APIView):
         else:
             url_count_changer(request, False)
             return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-# def url_redirect(request, prefix, url):
-    # print(prefix, url)

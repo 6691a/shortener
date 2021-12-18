@@ -20,9 +20,9 @@ from django.conf import settings
 from shortener.views import UrlRedirectView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('', include('shortener.urls')),
-    path("<str:prefix>/<str:url>", UrlRedirectView.as_view()),
+    # path("<str:prefix>/<str:url>", UrlRedirectView.as_view()),
 ]
 
 

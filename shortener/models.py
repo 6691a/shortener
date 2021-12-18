@@ -44,6 +44,7 @@ class ShortenedUrls(BaseModels):
     def clicked(self):
         self.click += 1
         self.save()
+        return self
 
     nick_name = models.CharField(max_length=100)
     category = models.ForeignKey(Categories, on_delete=models.DO_NOTHING, null=True)
