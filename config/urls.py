@@ -17,14 +17,39 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
+
+from django.urls import path
+from django.conf.urls import url
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 from shortener.views import UrlRedirectView
 
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Shrinkers API",
+        default_version="v1",
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include('shortener.urls')),
-    # path("<str:prefix>/<str:url>", UrlRedirectView.as_view()),
+    path("<str:prefix>/<str:url>", UrlRedirectView.as_view()),
 ]
 
+urlpatterns += [ 
+    url(r"^swagger(?P<format>\.json|\.yaml)$", schema_view.without_ui(cache_timeout=0), name="schema-json"),
+    url(r"^swagger/$", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
+    url(r"^redoc/$", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+]
 
 if settings.DEBUG:
     import debug_toolbar

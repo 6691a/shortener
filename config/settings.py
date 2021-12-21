@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
     'django_user_agents',
-
+    'drf_yasg',    
+    
     'shortener',
     'user',
     'plan',

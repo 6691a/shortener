@@ -64,3 +64,7 @@ class ShortenerUpdateDeleteView(APIView):
         else:
             url_count_changer(request, False)
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+class StatisticView(APIView):
+    def get(self, reqeust, url_id):
+        url = get_object_or_404()
