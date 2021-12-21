@@ -8,7 +8,7 @@ class DateStatSerializer(serializers.Serializer):
     created_at__date = serializers.DateField(format="%Y-%m-%d")
     clicks = serializers.IntegerField()
     
-class BrowerStatSerializer(serializers.Serializer):
+class BrowserStatSerializer(serializers.Serializer):
     web_browser = serializers.CharField(max_length=50)
     count = serializers.IntegerField()
     date = serializers.DateField(source='created_at__date', required=False)

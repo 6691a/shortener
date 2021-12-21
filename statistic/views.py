@@ -5,11 +5,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import serializers, status
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import  get_object_or_404
+from django.http.response import Http404
 
 from shortener.models import ShortenedUrls
 from .models import Statistic
-from .serializers import BrowerStatSerializer, DateStatSerializer
+from .serializers import BrowserStatSerializer, DateStatSerializer
 
 class DateStatView(APIView):
     def get(self, reqeust, url_id: int):
@@ -29,16 +30,17 @@ class DateStatView(APIView):
 
         return Response(serializer.data)
 
-class BrowerStatView(APIView):
-    def get(self, reqeust, pk):
-        query_set = get_object_or_404(
-            Statistic,
-            shortened_url_id=pk,
-            shortened_url__creator_id=reqeust.user.id, 
+class BrowserStatView(APIView):
+    def get(self, reqeust, url_id: int):
+        query_set = Statistic.objects.filter(
+            shortened_url_id=url_id,
+            # shortened_url__creator_id=reqeust.user.id,
+            shortened_url__creator_id=1,
             created_at__gte=datetime.utcnow() + timedelta(hours=9)  - timedelta(days=14)
         )
-
-        browser = (
+        if not query_set.exists():
+            raise Http404
+        browers = (
             query_set.values("web_browser", "created_at__date")
             .annotate(count=Count("id"))
             .values("count", "web_browser", "created_at__date")
@@ -50,6 +52,5 @@ class BrowerStatView(APIView):
             .values("count", "web_browser")
             .order_by("-count")
         )
-
-        serializer = BrowerStatSerializer(browers, many=True)
+        serializer = BrowserStatSerializer(browers, many=True)
         return Response(serializer.data)

@@ -42,6 +42,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('shortener.urls')),
+    # path('statistic/', include('statistic.urls')),
     path("<str:prefix>/<str:url>", UrlRedirectView.as_view()),
 ]
 
