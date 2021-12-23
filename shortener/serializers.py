@@ -22,6 +22,7 @@ class ShortenerSerializers(serializers.ModelSerializer):
         fields = '__all__'
         fields = ["id", "category", "prefix", "creator", "nick_name", "target_url", "shortened_url", "click"]
         extra_kwargs = {
+            "creator": {"read_only": True},
             "category": {"write_only": True},
             "prefix": {"read_only": True},
             "shortened_url": {"read_only": True},

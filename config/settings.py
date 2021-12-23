@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'plan',
     'statistic',
     'tracking',
+    'log',
 ]
 
 INTERNAL_IPS = [
@@ -71,6 +72,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
+    'config.middleware.log.BackOfficeLogMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'

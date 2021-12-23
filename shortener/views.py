@@ -37,10 +37,9 @@ class ShortenerListCreateView(APIView):
 
     def post(self, request):
         serializer = ShortenerSerializers(data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ShortenerUpdateDeleteView(APIView):
@@ -52,7 +51,7 @@ class ShortenerUpdateDeleteView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status.HTTP_200_OK)
         # try:
 
     def delete(self, request, id):
